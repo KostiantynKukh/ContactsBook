@@ -4,15 +4,15 @@
       <span class="contact_first-name">{{ firstName }} </span> 
       <span class="contact_last-name"> {{ lastName }}</span>
     </div>
-    <span class="contact_remove-contact" @click="removeContact(index)">
+    <span class="contact_remove-contact" @click="removeContact(index, contact)">
       &#10008;
-    </span>
+    </span>    
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Contact',
+  name: 'Contact',  
   props: {
     contact: {
       type: Object,
@@ -31,8 +31,11 @@ export default {
     }
   },
   methods: {
-    removeContact(index) {
-      this.$emit('removedContact', index)
+    removeContact(index, contact) {
+      this.$emit('removedContact', {
+        index: index,
+        contact: contact
+      })
     }
   }
 }

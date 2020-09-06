@@ -3,11 +3,20 @@
     <h2 class="contacts-list_title">Contacts book</h2>   
     
     <add-contact-popup 
-      v-if="popupIsActive"
+      v-if="popupAddContactIsVisible"
       @cancelAdding="cancelAdding"
       @addingContact="addingContact"      
       >
     </add-contact-popup>
+    
+    <confirmation-remove-popup
+    v-if="popupConfirmationRemoveIsVisible"   
+    @confirmationRemove="confirmationRemove"
+    >
+    {{ removingContactInfo.contact.firstName }}
+    {{ removingContactInfo.contact.lastName }}    
+    </confirmation-remove-popup>
+    
 
     <div class="contacts-list">
       <button class=contacts-list_add-contact
@@ -26,16 +35,20 @@
 <script>
 import Contact from '@/components/Contact'
 import AddContactPopup from '@/components/popups/AddContactPopup'
+import ConfirmationRemovePopup from '@/components/popups/ConfirmationRemovePopup'
 
 export default {
   name: 'ContactsList',
   components: {
     Contact,
-    AddContactPopup
+    AddContactPopup,
+    ConfirmationRemovePopup
   },
   data() { 
     return {
-      popupIsActive: false,
+      popupAddContactIsVisible: false,
+      popupConfirmationRemoveIsVisible: false,
+      removingContactInfo: '',
       idForContact: 4,
       contacts: [
         {
@@ -64,11 +77,16 @@ export default {
     }
   },
   methods: {    
-    removeContact(index) {
-      this.contacts.splice(index, 1)
+    removeContact(data) {
+      this.popupConfirmationRemoveIsVisible = true
+      this.removingContactInfo = data
+    },
+    confirmationRemove(state) {      
+      state ? this.contacts.splice(this.removingContactInfo.index, 1) : this.popupConfirmationRemoveIsVisible = false
+      this.popupConfirmationRemoveIsVisible = false
     },
     openAddContactPopup() {
-      this.popupIsActive = true
+      this.popupAddContactIsVisible = true
     },
     addingContact(contact) {
       if((contact.firstName || contact.lastName) && contact.phoneNumber) {
@@ -80,15 +98,15 @@ export default {
           email: contact.email
         })
         this.idForContact++
-        this.popupIsActive = false
+        this.popupAddContactIsVisible = false
 
       } else {
-        this.popupIsActive = false
+        this.popupAddContactIsVisible = false
       }
 
     },
     cancelAdding() {
-      this.popupIsActive = false
+      this.popupAddContactIsVisible = false
     }
   } 
 }
@@ -109,7 +127,7 @@ export default {
   }
 
   &_add-contact {     
-    background: rgb(63, 81, 248);
+    background: #111B47;
     color: #fff;
     font-size: 3rem;
     padding: 5px 12px;

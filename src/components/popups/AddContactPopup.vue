@@ -4,20 +4,36 @@
       <h2 class="popup_title">Add a new contact</h2>
       
       <input class="popup_first-name" v-model="newContact.firstName" type="text" placeholder="First name">
+
       <input class="popup_last-name" v-model='newContact.lastName' type="text" placeholder="Last name">
+
       <input class="popup_phone-number" v-model="newContact.phoneNumber" type="text" placeholder="Phone number">
+      
       <input class="popup_email" v-model="newContact.email" type="text" placeholder="Email">
+
       <div class="popup__group">
-        <input type="button" @click="cancelAdding" class="popup_cancel" value="Cancel">
-        <input type="submit" class="popup_submit" value="Save">
+
+        <w-button class="popup_cancel" size="sm" color="dark" event="cancelAdding" @cancelAdding="cancelAdding" type="button">
+          Cancel
+        </w-button>
+
+        <w-button type="submit" size="sm" color="light" >
+          Save
+        </w-button>  
+
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import WButton from '@/widgets/WButton'
+
 export default {
   name: 'AddContactPopup',
+  components: {
+    WButton
+  },
   data() {
     return {
       newContact: {
