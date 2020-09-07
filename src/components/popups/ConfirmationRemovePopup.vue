@@ -49,7 +49,7 @@ export default {
   bottom: 0;
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: flex-end; 
   background: rgba(126, 126, 126, 0.4);  
 }
 .remove-contact {
@@ -66,7 +66,7 @@ export default {
 
   &_title {
     font-size: 2rem;
-    color: gray;
+    color: rgb(87, 87, 87);
   }
 
   &_name {
@@ -76,7 +76,7 @@ export default {
 
   &_button-group {
     display: flex;
-    width: 50%;
+    width: 90%;
     justify-content: space-between;
   }
 }

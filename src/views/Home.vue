@@ -17,7 +17,7 @@ export default {
 
 <style scoped lang="scss">
 .wrapper {
-  width: 480px;
+  max-width: 480px;
   margin: 50px auto;
 }
 </style>
