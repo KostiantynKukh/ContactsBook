@@ -1,10 +1,9 @@
 <template>
   <div class="contact">
     <div class="contact_name">
-      <span class="contact_first-name">{{ firstName }} </span> 
-      <span class="contact_last-name"> {{ lastName }}</span>
+      <span class="contact_full-name">{{ fullName }} </span>      
     </div>
-    <span class="contact_remove-contact" @click="removeContact(index, contact)">
+    <span class="contact_remove-contact" @click="removeContact">
       &#10008;
     </span>    
   </div>
@@ -17,25 +16,16 @@ export default {
     contact: {
       type: Object,
       required: true
-    },
-    index: {
-      type: Number,
-      required: true
-    }
+    }    
   },
-  data() {
-    return {  
-      id: this.contact.id,    
-      firstName: this.contact.firstName,
-      lastName: this.contact.lastName
+  computed: {
+    fullName() {
+      return this.contact.firstName + " " + this.contact.lastName
     }
-  },
+  }, 
   methods: {
-    removeContact(index, contact) {
-      this.$emit('removedContact', {
-        index: index,
-        contact: contact
-      })
+    removeContact() {
+      this.$emit('onRemoveContact', this.contact)
     }
   }
 }

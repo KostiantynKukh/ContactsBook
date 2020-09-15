@@ -1,0 +1,58 @@
+/*RESET START*/
+@import url('./variables.scss');
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  border: 0; 
+  vertical-align: baseline;
+  box-sizing: border-box;  
+}
+
+html {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+
+body {
+  background: rgb(243, 243, 243);
+}
+/* RESET END */
+ 
+/*BUTTON STYLES START*/
+.btn {
+  padding: 5px 20px;
+  font-size: 1.5rem;   
+  border-radius: 5px;
+  outline: none;
+  line-height: 24px;
+  transition: 0.3s;
+  cursor: pointer;
+  border: 2px solid #111B47;
+  display: inline-block;
+}
+
+.btn-dark {
+  background: #111B47;    
+  color: #fff;
+
+  &:hover {
+      background: transparent;
+      border: 2px solid #111B47;
+      color: #111B47;
+  }    
+}
+
+.btn-light {
+  background: transparent;
+  color: #111B47;
+
+  &:hover {
+      background: #111B47;
+      border: 2px solid #111B47;
+      color: #fff;
+  }    
+} 
+/*BUTTON STYLES END*/

@@ -1,32 +1,43 @@
 <template>
   <div class="contacts-list__wrapper">
-    <h2 class="contacts-list_title">Contacts book</h2>   
-    
+
+    <!-- POPUPS START -->
     <add-contact-popup 
-      v-if="popupAddContactIsVisible"
-      @cancelAdding="cancelAdding"
-      @addingContact="addingContact"      
-      >
-    </add-contact-popup>
+      v-if="isVisiblePopupAddContact"
+      @onCancelAdd="cancelAdd"
+      @onAddContact="addContact"      
+    />
     
-    <confirmation-remove-popup
-    v-if="popupConfirmationRemoveIsVisible"   
-    @confirmationRemove="confirmationRemove"
+    
+    <confirm-remove-popup
+      v-if="isVisiblePopupConfirmRemove"   
+      @onClickRemove="confirmRemoveContact(idOfRemovingContact)"
+      @onClickCancel="cancelRemoveContact"
     >
-    {{ removingContactInfo.contact.firstName }}
-    {{ removingContactInfo.contact.lastName }}    
-    </confirmation-remove-popup>
-    
+      {{ fullNameOfRemoveContact }}
+    </confirm-remove-popup> 
+
+    <!-- POPUPS END -->
+
+    <h2 class="contacts-list_title">Contacts book</h2>       
 
     <div class="contacts-list">
-      <button class=contacts-list_add-contact
-      @click="openAddContactPopup"
+      <button 
+        class=contacts-list_add-contact
+        @click="isVisiblePopupAddContact = true"
       >
-      +
-    </button>
+        +
+      </button>
 
-      <contact v-for="(contact, index) in contacts" :key="contact.id" :contact='contact' :index='index' @removedContact="removeContact" class="contacts-list_item">      
-      </contact>
+      <contact 
+        v-for="contact in contacts"
+        :key="contact.id"
+        :contact='contact'         
+        @onRemoveContact="removeContact"
+        class="contacts-list_item"
+      />      
+      
+
     </div>  
   </div>
   
@@ -35,20 +46,21 @@
 <script>
 import Contact from '@/components/Contact'
 import AddContactPopup from '@/components/popups/AddContactPopup'
-import ConfirmationRemovePopup from '@/components/popups/ConfirmationRemovePopup'
+import ConfirmRemovePopup from '@/components/popups/ConfirmRemovePopup'
 
 export default {
   name: 'ContactsList',
   components: {
     Contact,
     AddContactPopup,
-    ConfirmationRemovePopup
+    ConfirmRemovePopup
   },
   data() { 
     return {
-      popupAddContactIsVisible: false,
-      popupConfirmationRemoveIsVisible: false,
-      removingContactInfo: '',
+      isVisiblePopupAddContact: false,
+      isVisiblePopupConfirmRemove: false,
+      fullNameOfRemoveContact: '',
+      idOfRemovingContact: '',
       idForContact: 4,
       contacts: [
         {
@@ -76,19 +88,33 @@ export default {
       ]
     }
   },
+  // computed: {
+  //   fullNameOfRemoveContact() {
+  //     return removingContactInfo.contact.firstName +
+  //     ' ' + 
+  //     removingContactInfo.contact.lastName;
+
+  //   },
+  // },
   methods: {    
-    removeContact(data) {
-      this.popupConfirmationRemoveIsVisible = true
-      this.removingContactInfo = data
+    removeContact(contact) {
+      this.fullNameOfRemoveContact = contact.firstName +
+      ' ' + contact.lastName
+      this.idOfRemovingContact = contact.id
+      this.isVisiblePopupConfirmRemove = true
     },
-    confirmationRemove(state) {      
-      state ? this.contacts.splice(this.removingContactInfo.index, 1) : this.popupConfirmationRemoveIsVisible = false
-      this.popupConfirmationRemoveIsVisible = false
+    confirmRemoveContact(id) { 
+      this.contacts.splice(
+      this.contacts.findIndex(item => item.id === id), 1)
+      this.isVisiblePopupConfirmRemove = false
+    },
+    cancelRemoveContact () {
+      this.isVisiblePopupConfirmRemove = false
     },
     openAddContactPopup() {
       this.popupAddContactIsVisible = true
     },
-    addingContact(contact) {
+    addContact(contact) {
       if((contact.firstName || contact.lastName) && contact.phoneNumber) {
         this.contacts.push({
           id: this.idForContact,
@@ -98,15 +124,15 @@ export default {
           email: contact.email
         })
         this.idForContact++
-        this.popupAddContactIsVisible = false
+        this.isVisiblePopupAddContact = false
 
       } else {
-        this.popupAddContactIsVisible = false
+        this.isVisiblePopupAddContact = false
       }
 
     },
-    cancelAdding() {
-      this.popupAddContactIsVisible = false
+    cancelAdd() {
+      this.isVisiblePopupAddContact = false
     }
   } 
 }

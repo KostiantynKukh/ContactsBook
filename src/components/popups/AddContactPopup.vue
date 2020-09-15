@@ -3,23 +3,50 @@
     <form @submit.prevent="submit" class="popup">
       <h2 class="popup_title">Add a new contact</h2>
       
-      <input class="popup_first-name" v-model="newContact.firstName" type="text" placeholder="First name">
+      <input 
+        class="popup_first-name" 
+        v-model="newContact.firstName" 
+        type="text" 
+        placeholder="First name"
+      >
 
-      <input class="popup_last-name" v-model='newContact.lastName' type="text" placeholder="Last name">
+      <input 
+        class="popup_last-name" 
+        v-model='newContact.lastName' 
+        type="text" 
+        placeholder="Last name"
+      >
 
-      <input class="popup_phone-number" v-model="newContact.phoneNumber" type="text" placeholder="Phone number">
+      <input 
+        class="popup_phone-number" 
+        v-model="newContact.phoneNumber" 
+        type="text" 
+        placeholder="Phone number"
+      >
       
-      <input class="popup_email" v-model="newContact.email" type="text" placeholder="Email">
+      <input 
+        class="popup_email" 
+        v-model="newContact.email" 
+        type="text" 
+        placeholder="Email"
+      >
 
       <div class="popup__group">
 
-        <w-button class="popup_cancel" size="sm" color="dark" event="cancelAdding" @cancelAdding="cancelAdding" type="button">
+        <button 
+          class="btn btn-dark popup_cancel" 
+          @click="cancelAdd" 
+          type="button"
+        >
           Cancel
-        </w-button>
+        </button>
 
-        <w-button type="submit" size="sm" color="light" >
+        <button 
+          type="submit" 
+          class="btn btn-light" 
+        >
           Save
-        </w-button>  
+        </button>  
 
       </div>
     </form>
@@ -27,13 +54,8 @@
 </template>
 
 <script>
-import WButton from '@/widgets/WButton'
-
 export default {
-  name: 'AddContactPopup',
-  components: {
-    WButton
-  },
+  name: 'AddContactPopup',  
   data() {
     return {
       newContact: {
@@ -47,14 +69,14 @@ export default {
   methods: {
     hidePopup(e) {      
       if(e.target.classList.contains('popup__wrapper')) {
-        this.$emit('cancelAdding')
+        this.$emit('onCancelAdd')
       }
     },
     submit() {
-      this.$emit('addingContact', this.newContact)
+      this.$emit('onAddContact', this.newContact)
     },
-    cancelAdding() {
-      this.$emit('cancelAdding')
+    cancelAdd() {
+      this.$emit('onCancelAdd')
     }
   }
 }
@@ -111,20 +133,20 @@ input[type='text'] {
     background: darken($color: rgb(149, 149, 149), $amount: 20);
   }
 }
-input[type='submit'], input[type='button'] {
-    background: rgb(34, 48, 255);
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 1.8rem;
-    color: #fff;
-    cursor: pointer;
-    outline: none;
-    transition: .2s;
+// input[type='submit'], input[type='button'] {
+//     background: rgb(34, 48, 255);
+//     padding: 5px 10px;
+//     border-radius: 5px;
+//     font-size: 1.8rem;
+//     color: #fff;
+//     cursor: pointer;
+//     outline: none;
+//     transition: .2s;
 
-    &:hover {
-      background: lighten($color: rgb(34, 48, 255), $amount: 10);
-      color: black;
-    }
-}
+//     &:hover {
+//       background: lighten($color: rgb(34, 48, 255), $amount: 10);
+//       color: black;
+//     }
+// }
 
 </style>

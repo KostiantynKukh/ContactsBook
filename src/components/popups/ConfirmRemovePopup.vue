@@ -1,39 +1,47 @@
 <template>
   <div class="remove-contact__wrapper" @click="hidePopup">
     <div class="remove-contact">
-      <h3 class="remove-contact_title">Remove contact 
+
+      <h3 class="remove-contact_title">
+        Remove contact 
         <span class="remove-contact_name" ><slot/>?</span>         
       </h3> 
+
       <div class="remove-contact_button-group">
-        <w-button size="md" color="dark" type="button" event="cancelRemove" @cancelRemove="cancelRemove">
+
+        <button 
+          class="btn btn-dark"
+          type="button"
+          @click="cancelRemove">
           Cancel
-        </w-button>
-        <w-button size="md" color="light" type="button" event="confirmRemove" @confirmRemove="confirmRemove">
+        </button>
+
+        <button 
+          class="btn btn-light"
+          type="button"
+          @click="confirmRemove">
           Remove
-        </w-button>
+        </button>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import WButton from '@/widgets/WButton'
 
 export default {  
-  name: 'ConfirmationRemovePopup',
-  components: {
-    WButton
-  },
+  name: 'ConfirmRemovePopup', 
   methods: {
     cancelRemove() {
-      this.$emit('confirmationRemove', false)
+      this.$emit('onClickCancel')
     },
     confirmRemove() {
-      this.$emit('confirmationRemove', true)
+      this.$emit('onClickRemove')
     },
-    hidePopup(e) {      
-      if(e.target.classList.contains('remove-contact__wrapper')) {
-        this.$emit('confirmationRemove', false)
+    hidePopup(event) {      
+      if(event.target.classList.contains('remove-contact__wrapper')) {
+        this.cancelRemove()
       }
     },
   }
